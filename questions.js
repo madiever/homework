@@ -1,5 +1,15 @@
-let money = +prompt("Ваш бюджет на месяц?", "");
+let money, time;
+
+function start() {
+    money = +prompt("Ваш бюджет на месяц?", "");
     time = prompt("Введите дату в формате YYYY-MM-DD", "");
+
+    while(isNaN(money) || money == "" || money == null) {
+        money = +prompt("Ваш бюджет на месяц?", "");
+    }
+}
+
+start();
 
 let appData = {
     budget: money,
@@ -7,10 +17,10 @@ let appData = {
     optionalExpenses: {},
     income: [],
     timeData: time,
-    savings: false
+    savings: true
 };
 
-
+function chooseExpenses() {
     for (let i = 0; i < 2; i++) {
         let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
             b = prompt("В сколько обойдется?", "");
@@ -22,7 +32,11 @@ let appData = {
         }   else {
 
         }
-    };
+    }
+}
+chooseExpenses();
+
+appData.moneyPerDay = (appData.budget / 30).toFixed();
 
     // Используем цикл WHILE
 
@@ -80,3 +94,47 @@ let appData = {
     } else {
         console.log("Произошла ошибка")
     }
+
+    function checkSavings() {
+        if (appData.savings == true) {
+            let save = +prompt("Какова сумма накоплений?"),
+                percent = +prompt("Под какой процент?");
+            
+            appData.monthIncome = save/100/12*percent;
+            alert("Доход в месяц с вашего депозита: " + appData.monthIncome);
+        }
+    }
+
+    checkSavings();
+
+    function detectDayBudget() {                    //Функция определения дневного бюджета
+        appData.moneyPerDay = (appData.budget / 30).toFixed();
+        alert ("Бюджет на 1 день составляет" + appData.moneyPerDay + "руб");
+    }
+
+    detectDayBudget();
+
+    function detectLevel() {                        //Функция определения уровня накоплений
+        if (appData.savings < 100000) {
+            console.log ("Минимальный уровень накоплении");
+        }   else if (appData.savings > 100000 && appData.savings < 150000) {
+                console.log ("Средний уровень достатка");
+        }   else if (appData.savings > 200000) {
+                console.log ("Высокий уровень накоплений");
+        }   else {
+                console.log ("Произошла ошибка!");
+        }
+    }
+    detectLevel();
+
+    function chooseOptExpenses() {                             // Функция для определения необязательных расходов
+
+        for (let i = 1; i <= 3; i++) {
+            let questionOptExpenses = prompt("Статья необязательных расходов?");
+            appData.optionalExpenses[i] = questionOptExpenses;
+            console.log(appData.optionalExpenses);
+        }
+    
+    
+    }
+    chooseOptExpenses();
